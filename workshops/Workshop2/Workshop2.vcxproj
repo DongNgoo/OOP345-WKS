@@ -22,6 +22,7 @@
     <ClInclude Include="abilities.h" />
     <ClInclude Include="archer.h" />
     <ClInclude Include="character.h" />
+    <ClInclude Include="characterTp1.h" />
     <ClInclude Include="guild.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="rogue.h" />

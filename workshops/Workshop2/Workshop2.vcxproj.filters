@@ -35,7 +35,7 @@
     <ClInclude Include="archer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="characterTp1.h">
+    <ClInclude Include="characterTpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

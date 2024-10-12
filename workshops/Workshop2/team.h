@@ -1,29 +1,48 @@
-#ifndef SENECATEAM_H
-#define SENECATEAM_H
+#ifndef SENECA_TEAM_H
+#define SENECA_TEAM_H
 
-#include <string>
-#include "character.h"
+#include <iostream>
+#include <cstring>
+#include "character.h" // Ensure you have a Character class implemented.
 
 namespace seneca {
+
     class Team {
-        std::string m_name;          // Team name
-        size_t m_cnt;                // Number of team members
-        Character** m_members;       // Array of pointers to team members (Character objects)
+    private:
+        Character** m_members; // Array of pointers to Character
+        size_t m_size;         // Current number of members
+        size_t m_capacity;     // Capacity of the array
+        std::string m_name;    // Name of the team
+
+        void resize(); // Resize the members array
 
     public:
-        Team(const char* name = ""); // Constructor with default name
-        Team(const Team& other);     // Copy constructor
-        Team& operator=(const Team& other); // Copy assignment operator
-        Team(Team&& other) noexcept; // Move constructor
-        Team& operator=(Team&& other) noexcept; // Move assignment operator
-        ~Team();                     // Destructor
+        // Default constructor
+        Team();
 
-        void addMember(const Character* c);    // Adds a member to the team
-        void removeMember(const std::string& name); // Removes a member from the team by name
-        Character* operator[](size_t idx) const; // Accesses a member by index
-        void showMembers() const;     // Displays the team's members
-        void cleanup();               // Cleans up the dynamically allocated memory
+        // Parameterized constructor
+        Team(const char* name);
+
+        // Rule of Five
+        ~Team();
+        Team(const Team& other);
+        Team& operator=(const Team& other);
+        Team(Team&& other) noexcept;
+        Team& operator=(Team&& other) noexcept;
+
+        // Add member to the team
+        void addMember(const Character* c);
+
+        // Remove member from the team
+        void removeMember(const std::string& c);
+
+        // Access operator
+        Character* operator[](size_t idx) const;
+
+        // Show members
+        void showMembers() const;
     };
+
 }
 
-#endif // SENECATEAM_H
+#endif // SENECA_TEAM_H

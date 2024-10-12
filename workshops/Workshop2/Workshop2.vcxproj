@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="barbarian.h" />
+    <ClCompile Include="team.cpp" />
     <ClCompile Include="tester_1.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

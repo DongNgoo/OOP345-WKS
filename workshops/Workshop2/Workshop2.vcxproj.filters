@@ -46,5 +46,8 @@
     <ClCompile Include="barbarian.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="team.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

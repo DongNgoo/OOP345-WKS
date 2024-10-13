@@ -99,8 +99,8 @@ namespace seneca
 			int health = 100 * c.getHealth() / c.getHealthMax();
 			out << "  Health: " << std::setw(3) << health << "% ";
 			out << '(' << std::setw(4) << c.getHealth() << '/'
-			           << std::setw(4) << c.getHealthMax() << ')';
-			out << "  Attack: "  << std::setw(4) << c.getAttackAmnt();
+				<< std::setw(4) << c.getHealthMax() << ')';
+			out << "  Attack: " << std::setw(4) << c.getAttackAmnt();
 			out << "  Defense: " << std::setw(4) << c.getDefenseAmnt();
 			return out;
 		}

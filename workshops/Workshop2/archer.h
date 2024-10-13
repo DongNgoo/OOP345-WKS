@@ -33,35 +33,34 @@ namespace seneca {
         }
 
         Character* clone() const override {
-            // Create a dynamically allocated copy of the current instance
+            // Create a dynamically allocated 
             return new Archer<Weapon_t>(*this);
         }
 
         void attack(Character* enemy) override {
             std::cout << this->getName() << " is attacking " << enemy->getName() << "." << std::endl;
 
-            // Retrieve the damage this character can do using the function getAttackAmnt.
             int damage = getAttackAmnt();
             std::cout << "Archer deals " << damage << " ranged damage!" << std::endl;
 
-            // Apply the damage to the enemy
+            
             enemy->takeDamage(damage);
         }
 
         void takeDamage(int dmg) override {
             std::cout << this->getName() << " is attacked for " << dmg << " damage." << std::endl;
 
-            // Retrieve the defense amount
+           
             int defense = getDefenseAmnt();
             std::cout << "Archer has a defense of " << defense << ". Reducing damage received." << std::endl;
 
-            // Reduce the damage based on the defense amount
+            
             dmg -= defense;
             if (dmg < 0) {
                 dmg = 0;  // Damage cannot be less than 0
             }
 
-            // Call the base class's takeDamage to update health
+          
             CharacterTpl<seneca::SuperHealth>::takeDamage(dmg);
         }
     };

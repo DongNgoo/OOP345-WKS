@@ -1,7 +1,7 @@
 #ifndef SENECA_BARBARIAN_CPP
 #define SENECA_BARBARIAN_CPP
 
-#include "Barbarian.h"
+#include "barbarian.h"
 
 namespace seneca {
 

@@ -32,32 +32,32 @@ namespace seneca {
             }
         }
 
-       /* auto getHealth = [&]() const override {
-            return static_cast<int>(m_health)};
-    
-    }*/
-           
+        /* auto getHealth = [&]() const override {
+             return static_cast<int>(m_health)};
+
+     }*/
+
         int gethealth() const override {
             return static_cast<int>(m_health);
         }
 
-       
+
         int getHealthMax() const override {
             return m_healthMax;
         }
 
-     
+
         void setHealth(int health) override {
             m_health = health;
         }
 
-       
+
         void setHealthMax(int health) override {
             m_healthMax = health;
             m_health = health;
         }
 
-        
+
     };
 
 }

@@ -1,21 +1,20 @@
 #ifndef SENECA_GUILD_H
 #define SENECA_GUILD_H
 
+#include "character.h"
 #include <iostream>
-#include <cstring>
-#include <vector>
-#include "character.h" // Ensure you have a Character class implemented.
+#include <string>
 
 namespace seneca {
 
     class Guild {
     private:
-        Character** m_members; // Array of pointers to Character
-        size_t m_size;         // Current number of members
-        size_t m_capacity;     // Capacity of the array
+        Character** m_members; // Pointer to dynamically allocated array of Character pointers
+        size_t m_size;         // Current size of the guild (number of members)
+        size_t m_capacity;     // Maximum capacity of the members array
         std::string m_name;    // Name of the guild
 
-        void resize(); // Resize the members array
+        void resize(); // Resizes the members array when needed
 
     public:
         // Default constructor
@@ -25,25 +24,24 @@ namespace seneca {
         Guild(const char* name);
 
         // Rule of Five
-        ~Guild();
+        ~Guild(); 
         Guild(const Guild& other);
-        Guild& operator=(const Guild& other);
-        Guild(Guild&& other) noexcept;
-        Guild& operator=(Guild&& other) noexcept;
+        Guild& operator=(const Guild& other); 
+        Guild(Guild&& other) noexcept; 
+        Guild& operator=(Guild&& other) noexcept; 
 
-        // Add member to the guild
+        
         void addMember(Character* c);
 
-        // Remove member from the guild
+       
         void removeMember(const std::string& c);
 
-        // Access operator
+        
         Character* operator[](size_t idx) const;
 
-        // Show members
+        
         void showMembers() const;
     };
-
 }
 
 #endif // SENECA_GUILD_H

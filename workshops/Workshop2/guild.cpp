@@ -8,8 +8,6 @@ namespace seneca {
     // Parameterized constructor
     Guild::Guild(const char* name) : m_members(nullptr), m_size(0), m_capacity(0), m_name(name) {}
 
-    // Rule of Five
-
     // Destructor
     Guild::~Guild() {
         for (size_t i = 0; i < m_size; ++i) {
@@ -101,16 +99,16 @@ namespace seneca {
             resize();
         }
 
-        // Add the character to the guild and increase health
+        // Add the character to the guild
         m_members[m_size] = c;
-        c->increaseMaxHealth(300); // Assuming a method to increase health
+        c->setHealthMax(c->getHealthMax() + 300); // Increase max health
         ++m_size;
     }
 
     void Guild::removeMember(const std::string& c) {
         for (size_t i = 0; i < m_size; ++i) {
             if (m_members[i]->getName() == c) {
-                m_members[i]->decreaseMaxHealth(300); // Assuming a method to decrease health
+                m_members[i]->setHealthMax(m_members[i]->getHealthMax() - 300); // Decrease max health
                 delete m_members[i]; // Free the character
                 m_members[i] = m_members[m_size - 1]; // Move last member to current position
                 --m_size;
@@ -139,5 +137,4 @@ namespace seneca {
             }
         }
     }
-
 }

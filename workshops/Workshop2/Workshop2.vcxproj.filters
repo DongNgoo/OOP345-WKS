@@ -49,5 +49,14 @@
     <ClCompile Include="team.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="guild.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="barbarian.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rogue.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

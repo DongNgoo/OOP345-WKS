@@ -98,15 +98,29 @@ namespace seneca {
     }
 
     void Team::showMembers() const {
-        std::cout << "[Team] " << m_name << std::endl;
-        if (m_cnt == 0) {
-            std::cout << "No team." << std::endl;
-        }
-        else {
-            for (size_t i = 0; i < m_cnt; ++i) {
-                std::cout << (i + 1) << ": " << *m_members[i] << std::endl; // Use operator<< defined for Character
-            }
-        }
+        if (m_name != "")
+        {
+            cout << "[Team] " << m_name << "\n";
+            for (size_t i = 0u; i < m_cnt; i++)
+            cout << std::setw(5) << i + 1 << ": " << *m_members[i] << "\n";
+
+            
+      }
+		else
+            cout <<"No team.\n";
     }
+
+    void Team::cleanup() {
+        for (size_t i = 0; i < m_cnt; ++i)
+delete m_members[i];
+
+		delete[] m_members;
+        m_members = {};
+        m_cnt = {};
+		m_name = {};
+       
+        
+    }
+
 
 }

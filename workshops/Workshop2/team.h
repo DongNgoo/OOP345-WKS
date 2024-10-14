@@ -1,52 +1,145 @@
 #ifndef SENECA_TEAM_H
 #define SENECA_TEAM_H
 
+#include <iostream>
 #include <string>
+#include <iomanip>
 #include "character.h"
 
 namespace seneca {
 
     class Team {
-        std::string m_name{};          // Name of the team
-        Character** m_members{};       // Dynamically allocated array of Character pointers
-        size_t m_cnt{};                // Current number of members in the team
+    private:
+        Character** m_members = nullptr; 
+        size_t m_cnt = 0;                
+        std::string m_name;             
 
-        // Helper function to clean up the allocated memory
-        void cleanup();
+        void cleanup() {
+            for (size_t i = 0; i < m_cnt; ++i)
+                delete m_members[i];
+
+            delete[] m_members;
+            m_members = nullptr;
+            m_cnt = 0;
+            m_name.clear();
+        }
 
     public:
-        // Constructors
+       
         Team() = default;
-        Team(const char* name);
 
-        // Copy constructor
-        Team(const Team& other);
+       
+        Team(const char* name) : m_name{ name } {}
 
-        // Copy assignment operator
-        Team& operator=(const Team& other);
+        
+        Team(const Team& other) : Team() {
+            *this = other;
+        }
 
-        // Move constructor
-        Team(Team&& other) noexcept;
+        
+        Team& operator=(const Team& other) {
+            if (this != &other) {
+                cleanup();
 
-        // Move assignment operator
-        Team& operator=(Team&& other) noexcept;
+                m_name = other.m_name;
+                m_cnt = other.m_cnt;
 
-        // Destructor
-        ~Team();
+                if (other.m_cnt > 0) {
+                    m_members = new Character * [other.m_cnt];
+                    for (size_t i = 0; i < other.m_cnt; ++i) {
+                        m_members[i] = other.m_members[i]->clone();
+                    }
+                }
+            }
+            return *this;
+        }
 
-        // Adds a member to the team (makes a clone of the character)
-        void addMember(const Character* c);
+        
+        Team(Team&& other) noexcept : Team() {
+            *this = std::move(other);
+        }
 
-        // Removes a member from the team by name
-        void removeMember(const std::string& name);
+        
+        Team& operator=(Team&& other) noexcept {
+            if (this != &other) {
+                cleanup();
 
-        // Overloads the subscript operator to access team members by index
-        Character* operator[](size_t idx) const;
+                m_cnt = other.m_cnt;
+                m_name = std::move(other.m_name);
+                m_members = other.m_members;
 
-        // Displays the team members' details
-        void showMembers() const;
+                other.m_members = nullptr;
+                other.m_cnt = 0;
+            }
+            return *this;
+        }
+
+        
+        ~Team() {
+            cleanup();
+        }
+
+        
+        void addMember(const Character* c) {
+            for (size_t i = 0; i < m_cnt; ++i) {
+                if (m_members[i]->getName() == c->getName()) {
+                    return; 
+                }
+            }
+
+            Character** tmp = new Character * [m_cnt + 1];
+            for (size_t i = 0; i < m_cnt; ++i) {
+                tmp[i] = m_members[i];
+            }
+            tmp[m_cnt] = c->clone();
+
+            delete[] m_members;
+            m_members = tmp;
+            ++m_cnt;
+        }
+
+        
+        void removeMember(const std::string& name) {
+            size_t idx = 0;
+            while (idx < m_cnt && m_members[idx]->getName() != name) {
+                ++idx;
+            }
+
+            if (idx < m_cnt) {
+                Character** tmp = new Character * [m_cnt - 1];
+                for (size_t i = 0; i < idx; ++i) {
+                    tmp[i] = m_members[i];
+                }
+                for (size_t i = idx + 1; i < m_cnt; ++i) {
+                    tmp[i - 1] = m_members[i];
+                }
+
+                delete m_members[idx];
+                delete[] m_members;
+                m_members = tmp;
+                --m_cnt;
+            }
+        }
+
+        
+        Character* operator[](size_t idx) const {
+            return (idx < m_cnt) ? m_members[idx] : nullptr;
+        }
+
+       
+        void showMembers() const {
+            if (!m_name.empty()) {
+                std::cout << "[Team] " << m_name << "\n";
+                for (size_t i = 0; i < m_cnt; ++i) {
+                    std::cout << std::setw(5) << i + 1 << ": " << *m_members[i] << "\n";
+                }
+            }
+            else {
+                std::cout << "No team.\n";
+            }
+        }
     };
 
-} // namespace seneca
+} 
 
 #endif // SENECA_TEAM_H

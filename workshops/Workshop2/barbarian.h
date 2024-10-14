@@ -8,7 +8,7 @@ using namespace std;
 namespace seneca {
 
     template<typename T, typename Ability_t, typename Weapon_t>
-    class Barbarian : public CharacterTpL<T> 
+    class Barbarian : public CharacterTpl<T> 
     {
     private:
         int m_baseDefense{};     
@@ -78,7 +78,7 @@ namespace seneca {
             m_ability.transformDamageReceived(dmg);
 
             
-            CharacterTpL<T>::takeDamage(dmg);
+            CharacterTpl<T>::takeDamage(dmg);
         
     };
 

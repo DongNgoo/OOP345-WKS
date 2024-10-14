@@ -7,7 +7,7 @@
 namespace seneca {
 
     template <typename T, typename FirstAbility_t, typename SecondAbility_t>
-    class Rogue : public CharacterTpL<T> {
+    class Rogue : public CharacterTpl<T> {
     private:
         int m_baseDefense;               // Basic defense of the character
         int m_baseAttack;                // Basic attack power of the character
@@ -74,7 +74,7 @@ namespace seneca {
             m_secondAbility.transformDamageReceived(dmg);
 
             // Call base class to update health
-            CharacterTpL<T>::takeDamage(dmg);
+            CharacterTpl<T>::takeDamage(dmg);
         }
     };
 

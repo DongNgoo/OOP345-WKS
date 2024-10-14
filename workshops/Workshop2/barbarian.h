@@ -5,23 +5,32 @@
 #include <string>
 #include "CharacterTpl.h"
 
+using namespace std;
+
 namespace seneca {
 
     template<typename T, typename Ability_t, typename Weapon_t>
-    class Barbarian : public CharacterTpl<T, Ability_t> {
-        int m_baseDefense;
-        int m_baseAttack;
-        Ability_t m_ability;
-        Weapon_t m_weapon[2];
+    class Barbarian : public CharacterTpl<T> {
+        double m_baseAttack{};
+        double m_baseDefense{};
+
+        Ability_t m_ability{};
+
+		Weapon_t m_weapon[2];
 
     public:
         // Constructor
         Barbarian(const char* name, int healthMax, int baseAttack, int baseDefense,
-            Weapon_t primaryWeapon, Weapon_t secondaryWeapon);
+            Weapon_t primaryWeapon, Weapon_t secondaryWeapon) : CharacterTpl<T>(name, healthMax)
+        {
+			m_baseAttack = baseAttack;
+			m_baseDefense = baseDefense;
+            m_weapon[0] = primaryWeapon;
+            m_weapon[1] = secondaryWeapon;
+        }
 
        
-        int getAttackAmnt() const;
-
+        int getAttackAmnt() const override;
       
         int getDefenseAmnt() const;
 

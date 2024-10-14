@@ -1,48 +1,52 @@
 #ifndef SENECA_TEAM_H
 #define SENECA_TEAM_H
 
-#include <iostream>
-#include <cstring>
-#include "character.h" // Ensure you have a Character class implemented.
+#include <string>
+#include "character.h"
 
 namespace seneca {
 
     class Team {
-    private:
-        Character** m_members; // Array of pointers to Character
-        size_t m_size;         // Current number of members
-        size_t m_capacity;     // Capacity of the array
-        std::string m_name;    // Name of the team
+        std::string m_name{};          // Name of the team
+        Character** m_members{};       // Dynamically allocated array of Character pointers
+        size_t m_cnt{};                // Current number of members in the team
 
-        void resize(); // Resize the members array
+        // Helper function to clean up the allocated memory
+        void cleanup();
 
     public:
-        // Default constructor
-        Team();
-
-        // Parameterized constructor
+        // Constructors
+        Team() = default;
         Team(const char* name);
 
-        // Rule of Five
-        ~Team();
+        // Copy constructor
         Team(const Team& other);
+
+        // Copy assignment operator
         Team& operator=(const Team& other);
+
+        // Move constructor
         Team(Team&& other) noexcept;
+
+        // Move assignment operator
         Team& operator=(Team&& other) noexcept;
 
-        // Add member to the team
+        // Destructor
+        ~Team();
+
+        // Adds a member to the team (makes a clone of the character)
         void addMember(const Character* c);
 
-        // Remove member from the team
-        void removeMember(const std::string& c);
+        // Removes a member from the team by name
+        void removeMember(const std::string& name);
 
-        // Access operator
+        // Overloads the subscript operator to access team members by index
         Character* operator[](size_t idx) const;
 
-        // Show members
+        // Displays the team members' details
         void showMembers() const;
     };
 
-}
+} // namespace seneca
 
 #endif // SENECA_TEAM_H

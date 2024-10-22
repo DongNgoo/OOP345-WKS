@@ -77,18 +77,25 @@ namespace seneca {
 
     
     void Guild::addMember(Character* c) {
+        // Check if the character is already in the guild
         for (size_t i = 0; i < m_size; ++i) {
             if (m_members[i]->getName() == c->getName()) {
-                return; 
+                return; // Character is already in the guild, do nothing
             }
         }
 
+        // Resize the array if needed
         if (m_size == m_capacity) {
             resize();
         }
 
-        m_members[m_size++] = c->clone();
+        // Increase the max health of the character by 300 points
+        c->setHealthMax(300);
+
+        // Add the character to the guild
+        m_members[m_size++] = c;
     }
+
 
    
     void Guild::removeMember(const std::string& name) {

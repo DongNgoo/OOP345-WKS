@@ -4,9 +4,9 @@ namespace seneca {
 
     void Team::cleanup() {
         for (size_t i = 0; i < m_cnt; ++i)
-            delete m_members[i];
+            delete m_members[i];  // Delete each character
 
-        delete[] m_members;
+        delete[] m_members;  // Free the dynamic array
         m_members = nullptr;
         m_cnt = 0;
         m_name.clear();
@@ -17,12 +17,12 @@ namespace seneca {
     Team::Team(const char* name) : m_name{ name } {}
 
     Team::Team(const Team& other) : Team() {
-        *this = other;
+        *this = other;  // Delegate to copy assignment operator
     }
 
     Team& Team::operator=(const Team& other) {
         if (this != &other) {
-            cleanup();
+            cleanup();  // Free existing resources
 
             m_name = other.m_name;
             m_cnt = other.m_cnt;
@@ -30,7 +30,7 @@ namespace seneca {
             if (other.m_cnt > 0) {
                 m_members = new Character * [other.m_cnt];
                 for (size_t i = 0; i < other.m_cnt; ++i) {
-                    m_members[i] = other.m_members[i]->clone();
+                    m_members[i] = other.m_members[i]->clone();  // Clone each character
                 }
             }
         }
@@ -38,12 +38,12 @@ namespace seneca {
     }
 
     Team::Team(Team&& other) noexcept : Team() {
-        *this = std::move(other);
+        *this = std::move(other);  // Delegate to move assignment operator
     }
 
     Team& Team::operator=(Team&& other) noexcept {
         if (this != &other) {
-            cleanup();
+            cleanup();  // Free existing resources
 
             m_cnt = other.m_cnt;
             m_name = std::move(other.m_name);
@@ -60,18 +60,24 @@ namespace seneca {
     }
 
     void Team::addMember(const Character* c) {
+        // Check if the team already has a character with the same name
         for (size_t i = 0; i < m_cnt; ++i) {
             if (m_members[i]->getName() == c->getName()) {
-                return;
+                return;  // Character with the same name exists, so don't add
             }
         }
 
+        // If no duplicate is found, create a copy of the character using clone()
+        Character* newMember = c->clone();
+
+        // Resize the members array to accommodate the new member
         Character** tmp = new Character * [m_cnt + 1];
         for (size_t i = 0; i < m_cnt; ++i) {
-            tmp[i] = m_members[i];
+            tmp[i] = m_members[i];  // Copy existing members
         }
-        tmp[m_cnt] = c->clone();
+        tmp[m_cnt] = newMember;  // Add the new member at the end
 
+        // Delete the old members array and update the team
         delete[] m_members;
         m_members = tmp;
         ++m_cnt;

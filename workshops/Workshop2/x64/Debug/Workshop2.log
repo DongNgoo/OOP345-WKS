@@ -1,0 +1,45 @@
+﻿  barbarian.h
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(11,30): error C2976: 'seneca::CharacterTpl': too few template arguments
+C:\OOP345\git-workshop\workshops\Workshop2\characterTpl.h(12,5): message : see declaration of 'seneca::CharacterTpl'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(83,6): message : see reference to class template instantiation 'seneca::Barbarian<T,Ability_t,Weapon_t>' being compiled
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(11,30): error C2955: 'seneca::CharacterTpl': use of class template requires template argument list
+C:\OOP345\git-workshop\workshops\Workshop2\characterTpl.h(12,5): message : see declaration of 'seneca::CharacterTpl'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(23,27): error C2760: syntax error: '<' was unexpected here; expected '{'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(23,29): error C2059: syntax error: '>'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(24,9): error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(70,18): error C2143: syntax error: missing ';' before '<<'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(70,1): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(70,82): error C2238: unexpected token(s) preceding ';'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(71,18): error C2143: syntax error: missing ';' before '<<'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(71,1): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(71,105): error C2238: unexpected token(s) preceding ';'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(74,17): error C2143: syntax error: missing ';' before '-='
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(74,1): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(74,36): error C2238: unexpected token(s) preceding ';'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(75,17): error C2059: syntax error: '='
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(75,33): error C2334: unexpected token(s) preceding ':'; skipping apparent function body
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(83,5): fatal  error C1903: unable to recover from previous error(s); stopping compilation
+  guild.cpp
+  team.cpp
+  tester_1.cpp
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(11,30): error C2976: 'seneca::CharacterTpl': too few template arguments
+C:\OOP345\git-workshop\workshops\Workshop2\characterTpl.h(12,5): message : see declaration of 'seneca::CharacterTpl'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(83,6): message : see reference to class template instantiation 'seneca::Barbarian<T,Ability_t,Weapon_t>' being compiled
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(11,30): error C2955: 'seneca::CharacterTpl': use of class template requires template argument list
+C:\OOP345\git-workshop\workshops\Workshop2\characterTpl.h(12,5): message : see declaration of 'seneca::CharacterTpl'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(23,27): error C2760: syntax error: '<' was unexpected here; expected '{'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(23,29): error C2059: syntax error: '>'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(24,9): error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(70,18): error C2143: syntax error: missing ';' before '<<'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(70,1): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(70,82): error C2238: unexpected token(s) preceding ';'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(71,18): error C2143: syntax error: missing ';' before '<<'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(71,1): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(71,105): error C2238: unexpected token(s) preceding ';'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(74,17): error C2143: syntax error: missing ';' before '-='
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(74,1): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(74,36): error C2238: unexpected token(s) preceding ';'
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(75,17): error C2059: syntax error: '='
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(75,33): error C2334: unexpected token(s) preceding ':'; skipping apparent function body
+C:\OOP345\git-workshop\workshops\Workshop2\barbarian.h(83,5): fatal  error C1903: unable to recover from previous error(s); stopping compilation
+  Generating Code...

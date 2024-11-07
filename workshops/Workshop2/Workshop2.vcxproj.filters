@@ -46,16 +46,10 @@
     <ClCompile Include="barbarian.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="team.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="guild.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="barbarian.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="rogue.cpp">
+    <ClCompile Include="team.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>

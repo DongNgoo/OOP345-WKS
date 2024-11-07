@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "characterTpl.h"
+#include "character.h"
 #include "health.h"
 
 

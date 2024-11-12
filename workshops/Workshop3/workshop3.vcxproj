@@ -127,10 +127,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="book.cpp" />
+    <ClCompile Include="movie.cpp" />
+    <ClCompile Include="settings.cpp" />
     <ClCompile Include="tester_1.cpp" />
+    <ClCompile Include="tvShow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="book.h" />
     <ClInclude Include="mediaItem.h" />
+    <ClInclude Include="movie.h" />
+    <ClInclude Include="settings.h" />
+    <ClInclude Include="tvShow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="books.csv" />
+    <None Include="episodes.csv" />
+    <None Include="got.csv" />
+    <None Include="movies.csv" />
+    <None Include="tvShows.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="sample_output_gcc.txt" />
+    <Text Include="sample_output_vs.txt" />
+    <Text Include="words.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

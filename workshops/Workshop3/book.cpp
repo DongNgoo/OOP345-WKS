@@ -1,5 +1,6 @@
 #include "book.h"
 #include "mediaItem.h"
+#include "settings.h"
 #include <sstream>
 #include <stdexcept>
 #include <algorithm>
@@ -46,15 +47,15 @@ namespace seneca {
 		if (strBook.size() == 0 || strBook[0] == '#') {
 			throw "Not a valid book";
 		}
-		std::string tittle, author, country, summary;
+		std::string title, author, country, summary;
 		unsigned short year;
 		double price;
 		size_t pos;
 		size_t nextPos = 0;
 		//tittle
 		nextPos = strBook.find(",", pos);
-		tittle = strBook.substr(pos, nextPos - pos);
-		MediaItem::trim(tittle);
+		title = strBook.substr(pos, nextPos - pos);
+		MediaItem::trim(title);
 		pos = nextPos + 1;
 
         //author
@@ -86,6 +87,6 @@ namespace seneca {
         MediaItem::trim(summary);
 
 		//return nullptr;
-        return new Book(author, tittle, country, price, year, summary);
+        return new Book(author, title, country, price, year, summary);
 	}
 }

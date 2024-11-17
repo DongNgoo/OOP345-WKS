@@ -5,7 +5,9 @@
 #include <iomanip>
 #include <algorithm>
 #include <numeric>
+#include <iterator>
 // for long episode 
+ 
 //use STL to find episodes that are longer than 60 mins
 // and add them to the list, with using for loop anywhere in the code 
 
@@ -177,12 +179,18 @@ namespace seneca {
             [](double sum, const TvEpisode& episode) { return sum + episode.m_length; }) / m_episodes.size();
     }
 
-    // Get a list of long episode names (at least 1 hour)
+   
     std::list<std::string> TvShow::getLongEpisodes() const {
-        std::list<std::string> longEpisodes;
-        std::copy_if(m_episodes.begin(), m_episodes.end(), std::back_inserter(longEpisodes),
-            [](const TvEpisode& episode) { return episode.m_length >= 3600; });
-        return longEpisodes;
+        std::list<std::string> episodeNames;
+
+        std::copy_if(m_episodes.begin(), m_episodes.end(),
+            std::back_inserter(episodeNames),
+            [](const TvEpisode& episode) {
+                return episode.m_length >= 60;  
+            });
+
+        
+        return episodeNames;
     }
     
 }

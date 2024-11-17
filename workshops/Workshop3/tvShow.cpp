@@ -15,8 +15,8 @@
 namespace seneca {
 	// Private constructor
 	 // Private constructor
-	TvShow::TvShow(const std::string& id, const std::string& title, int year, const std::string& summary)
-		: MediaItem(title, summary, year), m_id(id) {}
+    /*TvShow::TvShow(const std::string& title, const std::string& summary, unsigned short year, const std::string& id)
+        : MediaItem(title, summary, year), m_id{ id } {}*/
     void TvShow::display(std::ostream& out) const
     {
         if (g_settings.m_tableView)
@@ -71,7 +71,7 @@ namespace seneca {
         }
     }
     TvShow* TvShow::createItem(const std::string& strShow) {
-        if (strShow.empty() || strShow[0] == '#') {
+     /*   if (strShow.empty() || strShow[0] == '#') {
             throw std::invalid_argument("Not a valid show");
         }
         std::istringstream stream(strShow);
@@ -91,7 +91,26 @@ namespace seneca {
         trim(summary);
 
         int year = std::stoi(yearStr);
-        return new TvShow(id, title, year, summary);
+        return new TvShow(id, title, year, summary);*/
+        if (strShow.empty() || strShow[0] == '#')
+            throw std::invalid_argument("Not a valid show.");
+
+        std::istringstream ss(strShow);
+        std::string token;
+        std::getline(ss, token, ',');
+        std::string id = token;  // Changed to std::string
+        std::getline(ss, token, ',');
+        std::string title = token;
+        std::getline(ss, token, ',');
+        unsigned short year = static_cast<unsigned short>(std::stoi(token));
+        std::getline(ss, token, ',');
+        std::string summary = token;
+
+        // Trim spaces
+        trim(title);
+        trim(summary);
+
+        return new TvShow(title, summary, year, id);
     }
     template<typename Collection_t>
     void TvShow::addEpisode(Collection_t& col, const std::string& strEpisode) {
@@ -128,13 +147,26 @@ namespace seneca {
         unsigned short season = seasonStr.empty() ? 1 : static_cast<unsigned short>(std::stoi(seasonStr));
         unsigned short numberInSeason = static_cast<unsigned short>(std::stoi(numberInSeasonStr));
         unsigned int length = static_cast<unsigned int>(std::stoi(lengthStr));
-        auto it = std::find_if(col.begin(), col.end(), [&id](const std::unique_ptr<MediaItem>& item) {
-            return item->getId() == id;
-            });
+        auto show = std::find_if(col.begin(), col.end(),
+            [&id](const TvShow* show) { return show->getId() == id; });
 
-        if (it != col.end()) {
-            TvEpisode episode{ dynamic_cast<TvShow*>(it->get()), numberOverall, season, numberInSeason, airDate, length, title, summary };
-            dynamic_cast<TvShow*>(it->get())->m_episodes.push_back(episode);
+        if (show != col.end())
+        {
+            TvEpisode episode;
+            episode.m_show = *show;
+            episode.m_numberOverall = numberOverall;
+            episode.m_season = season;
+            episode.m_numberInSeason = numberInSeason;
+            episode.m_airDate = airDate;
+            episode.m_length = length;
+            episode.m_title = title;
+            episode.m_summary = summary;
+            
+            (*show)->addEpisode(episode);
+        }
+        else
+        {
+            throw std::invalid_argument("Show not found for episode.");
         }
     }
 

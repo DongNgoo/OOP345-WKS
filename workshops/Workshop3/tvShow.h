@@ -7,6 +7,7 @@
 #include <ostream>
 #include <stdexcept>
 namespace seneca {
+	class TvShow;
 	struct TvEpisode
 	{
 		const TvShow* m_show{};
@@ -24,14 +25,20 @@ namespace seneca {
 		std::list<TvEpisode> m_episodes{};
 
 		//Private constructor
-		TvShow(const std::string& id, const std::string& title, int year, const std::string& summary);
+	   TvShow(const std::string& title, const std::string& summary, unsigned short year, const std::string& id)
+			: MediaItem(title, summary, year), m_id{ id } {}
 	public:
 		void display(std::ostream& out) const override;
-		TvShow* createItem(const std::string& strShow);
+		static TvShow* createItem(const std::string& strShow);
+
 		template<typename Collection_t>
 		static void addEpisode(Collection_t& col, const std::string& strEpisode);
+
 		double getEpisodeAverageLength() const;
+
 		std::list<std::string> getLongEpisodes() const;
+
+		const std::string& getId() const { return m_id; }
 
 	};
 }

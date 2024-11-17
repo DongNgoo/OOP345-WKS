@@ -50,7 +50,7 @@ namespace seneca {
 		std::string title, author, country, summary;
 		unsigned short year;
 		double price;
-		size_t pos;
+		size_t pos = 0;
 		size_t nextPos = 0;
 		//tittle
 		nextPos = strBook.find(",", pos);

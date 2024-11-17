@@ -2,6 +2,7 @@
 #define SENECA_COLLECTION_H
 #include "mediaItem.h"
 #include <string>
+#include <cstddef>
 #include <algorithm>
 #include <functional>
 #include <stdexcept>
@@ -11,7 +12,7 @@ namespace seneca {
 	private:
 		std::string m_name;
 		std::vector<MediaItem*> m_items;
-		void (*m_observer)(const Collection&, const MediaItem&) = mullptr;
+		void (*m_observer)(const Collection&, const MediaItem&) = nullptr;
 	public:
 		//constructor
 		explicit Collection(const std::string& name);

@@ -97,100 +97,45 @@ namespace seneca {
         if (strShow.empty() || strShow[0] == '#')
             throw std::invalid_argument("Not a valid show.");
 
-        std::istringstream ss(strShow);
-        std::string token;
-        std::getline(ss, token, ',');
-        std::string id = token;  // Changed to std::string
-        std::getline(ss, token, ',');
-        std::string title = token;
-        std::getline(ss, token, ',');
-        unsigned short year = static_cast<unsigned short>(std::stoi(token));
-        std::getline(ss, token, ',');
-        std::string summary = token;
+        std::istringstream stream(strShow);
+        std::string id, title, yearStr, summary;
+        getline(stream, id, ',');
+        getline(stream, title, ',');
+        getline(stream, yearStr, ',');
+        getline(stream, summary);
 
-        // Trim spaces
-        trim(title);
-        trim(summary);
-
-        return new TvShow(title, summary, year, id);
-    }
-    template<typename Collection_t>
-    void TvShow::addEpisode(Collection_t& col, const std::string& strEpisode) {
-        if (strEpisode.empty() || strEpisode[0] == '#') {
-            throw std::invalid_argument("Not a valid episode");
-        }
-
-        std::istringstream stream(strEpisode);
-        std::string id, numberOverallStr, seasonStr, numberInSeasonStr, airDate, lengthStr, title, summary;
-        
-        std::getline(stream, id, ',');
-        std::getline(stream, numberOverallStr, ',');
-        std::getline(stream, seasonStr, ',');
-        std::getline(stream, numberInSeasonStr, ',');
-        std::getline(stream, airDate, ',');
-        std::getline(stream, lengthStr, ',');
-        std::getline(stream, title, ',');
-        std::getline(stream, summary, ',');
-
-        auto trim = [](std::string& str) {
-            str.erase(0, str.find_first_not_of(' '));
-            str.erase(str.find_last_not_of(' ') + 1);
-            };
         trim(id);
-        trim(numberOverallStr);
-        trim(seasonStr);
-        trim(numberInSeasonStr);
-        trim(airDate);
-        trim(lengthStr);
         trim(title);
+        trim(yearStr);
         trim(summary);
 
-        unsigned short numberOverall = static_cast<unsigned short>(std::stoi(numberOverallStr));
-        unsigned short season = seasonStr.empty() ? 1 : static_cast<unsigned short>(std::stoi(seasonStr));
-        unsigned short numberInSeason = static_cast<unsigned short>(std::stoi(numberInSeasonStr));
-        unsigned int length = static_cast<unsigned int>(std::stoi(lengthStr));
-        auto show = std::find_if(col.begin(), col.end(),
-            [&id](const TvShow* show) { return show->getId() == id; });
+        unsigned short year = std::stoi(yearStr);
 
-        if (show != col.end())
-        {
-            TvEpisode episode;
-            episode.m_show = *show;
-            episode.m_numberOverall = numberOverall;
-            episode.m_season = season;
-            episode.m_numberInSeason = numberInSeason;
-            episode.m_airDate = airDate;
-            episode.m_length = length;
-            episode.m_title = title;
-            episode.m_summary = summary;
-            
-            (*show)->addEpisode(episode);
-        }
-        else
-        {
-            throw std::invalid_argument("Show not found for episode.");
-        }
+        return new TvShow(id, title, summary, year);
     }
+   
 
     // Calculate the average length of episodes
     double TvShow::getEpisodeAverageLength() const {
         if (m_episodes.empty()) return 0.0;
         return std::accumulate(m_episodes.begin(), m_episodes.end(), 0.0,
-            [](double sum, const TvEpisode& episode) { return sum + episode.m_length; }) / m_episodes.size();
+            [](double total, const TvEpisode& ep) { return total + ep.m_length; }) / m_episodes.size();
     }
-
    
     std::list<std::string> TvShow::getLongEpisodes() const {
-        std::list<std::string> episodeNames;
+        std::list<TvEpisode> episodeNames;
+       
+        std::copy_if(m_episodes.begin(), m_episodes.end(), std::back_inserter(episodeNames),
+            [](const TvEpisode& episode) { return episode.m_length >= 3600; });
+        
+        std::list<std::string> names(episodeNames.size());
 
-        std::copy_if(m_episodes.begin(), m_episodes.end(),
-            std::back_inserter(episodeNames),
-            [](const TvEpisode& episode) {
-                return episode.m_length >= 60;  
+        std::transform(episodeNames.begin(), episodeNames.end(), names.begin(), [](const TvEpisode& n)
+            {
+                return n.m_title;
             });
 
-        
-        return episodeNames;
+        return names;
+       
     }
-    
 }

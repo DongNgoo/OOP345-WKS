@@ -30,6 +30,12 @@
     <ClCompile Include="tvShow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="spellChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="collection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mediaItem.h">
@@ -45,6 +51,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tvShow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="spellChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="collection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

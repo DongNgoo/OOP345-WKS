@@ -37,8 +37,10 @@ namespace seneca {
 		}
 	}
 	void SpellChecker::showStatistics(std::ostream& out) const {
+		out << "Spellchecker Statistics" << std::endl;
+
 		for (size_t i = 0; i < ARRAY_SIZE; ++i) {
-			out << std::setw(15) << std::right << m_badWords[i] << ": "
+			out << std::setw(15) << m_badWords[i] << ": "
 				<< m_replacementCounts[i] << " replacements" << std::endl;
 		}
 	}

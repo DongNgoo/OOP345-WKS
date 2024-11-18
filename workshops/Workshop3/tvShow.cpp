@@ -73,7 +73,28 @@ namespace seneca {
         }
     }
    
-   
+     TvShow* TvShow::createItem(const std::string& strShow) {
+        //std::cout << "creating Item: " << std:: endl;
+        if (strShow.empty() || strShow[0] == '#')
+            throw "Not a valid show.";
+
+        std::istringstream stream(strShow);
+        std::string id, title, yearStr, summary;
+        getline(stream, id, ',');
+        getline(stream, title, ',');
+        getline(stream, yearStr, ',');
+        getline(stream, summary);
+
+        trim(id);
+        trim(title);
+        trim(yearStr);
+        trim(summary);
+
+
+        int year = std::stoi(yearStr);
+
+        return new TvShow(id, title, summary, year);
+    }
 
     // Calculate the average length of episodes
     double TvShow::getEpisodeAverageLength() const {

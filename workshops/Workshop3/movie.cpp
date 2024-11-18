@@ -46,7 +46,7 @@ namespace seneca {
 
     Movie* Movie::createItem(const std::string& strMovie) {
         if (strMovie.empty() || strMovie[0] == '#') {
-            throw std::invalid_argument("Not a valid movie");
+            throw "Not a valid movie.";
         }
         std::string title, summary;
         unsigned short year;

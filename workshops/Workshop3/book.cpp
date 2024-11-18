@@ -45,24 +45,27 @@ namespace seneca {
     }
     Book* Book::createItem(const std::string& strBook) {
 		if (strBook.size() == 0 || strBook[0] == '#') {
-			throw "Not a valid book";
+			throw "Not a valid book.";
 		}
-		std::string title, author, country, summary;
+		std::string author, title, country, summary;
 		unsigned short year;
 		double price;
 		size_t pos = 0;
 		size_t nextPos = 0;
-		//tittle
-		nextPos = strBook.find(",", pos);
-		title = strBook.substr(pos, nextPos - pos);
-		MediaItem::trim(title);
-		pos = nextPos + 1;
+		
+		
 
         //author
 		nextPos = strBook.find(",", pos);
 		author = strBook.substr(pos, nextPos - pos);
 		MediaItem::trim(author);
 		pos = nextPos + 1;
+        
+        //tittle
+        nextPos = strBook.find(",", pos);
+        title = strBook.substr(pos, nextPos - pos);
+        MediaItem::trim(title);
+        pos = nextPos + 1;
 
         //country
 		nextPos = strBook.find(",", pos);

@@ -35,37 +35,13 @@ namespace seneca {
 			: MediaItem(title, summary, year), m_id{ id } {}
 	public:
 		void display(std::ostream& out) const override;
-       static TvShow* createItem(const std::string& strShow) {
-            
-            if (strShow.empty() || strShow[0] == '#')
-                throw std::invalid_argument("Not a valid show.");
 
-            std::istringstream stream(strShow);
-            std::string id, title, yearStr, summary;
-            getline(stream, id, ',');
-            getline(stream, title, ',');
-            getline(stream, yearStr, ',');
-            getline(stream, summary);
-
-            auto trim = [](std::string& s) {
-                s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char c) { return !std::isspace(c); }));
-                s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char c) { return !std::isspace(c); }).base(), s.end());
-                };
-            trim(id);
-            trim(title);
-            trim(yearStr);
-            trim(summary);
-
-           
-            int year = std::stoi(yearStr);
-
-            return new TvShow(id, title, summary, year);
-        }
+        static TvShow* createItem(const std::string& strShow);
 
         template<typename Collection_t>
         static void addEpisode(Collection_t& col, const std::string& strEpisode) {
             if (strEpisode.empty() || strEpisode[0] == '#') {
-                throw std::invalid_argument("Not a valid episode");
+                throw "Not a valid episode.";
             }
 
             std::istringstream stream(strEpisode);
@@ -78,7 +54,7 @@ namespace seneca {
             std::getline(stream, airDate, ',');
             std::getline(stream, lengthStr, ',');
             std::getline(stream, title, ',');
-            std::getline(stream, summary, ',');
+            std::getline(stream, summary);
 
             trim(id);
             trim(numberOverallStr);
@@ -107,7 +83,7 @@ namespace seneca {
             }
 
             if (!found) {
-                throw std::invalid_argument("TV Show ID not found in the collection.");
+                throw "TV Show ID not found in the collection.";
             }
         }
 

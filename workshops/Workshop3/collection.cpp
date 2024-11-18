@@ -71,12 +71,22 @@ namespace seneca {
 		   std::string title = item->getTitle();
 		   std::string summary = item->getSummary();
 
-		   if (!title.empty() && title.front() == '"' && title.back() == '"')
-			   item->setTitle(title.substr(1, title.size() - 2));
+		   if (!title.empty() && title.front() == '"') {
+			   title = title.substr(1); // Remove leading quote
+		   }
+		   if (!title.empty() && title.back() == '"') {
+			   title = title.substr(0, title.size() - 1); // Remove trailing quote
+		   }
+		   item->setTitle(title);
 
-
-		   if (!summary.empty() && summary.front() == '"' && summary.back() == '"')
-			   item->setSummary(summary.substr(1, summary.size() - 2));
+		   // Remove quotation marks from the summary
+		   if (!summary.empty() && summary.front() == '"') {
+			   summary = summary.substr(1); // Remove leading quote
+		   }
+		   if (!summary.empty() && summary.back() == '"') {
+			   summary = summary.substr(0, summary.size() - 1); // Remove trailing quote
+		   }
+		   item->setSummary(summary);
 		   });
    }
 

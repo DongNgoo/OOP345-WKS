@@ -86,7 +86,7 @@ namespace seneca {
         year = static_cast<unsigned short>(std::stoi(yearStr));
         pos = nextPos + 1;
 
-        summary = strBook.substr(pos, nextPos = pos);
+        summary = strBook.substr(pos);
         MediaItem::trim(summary);
 
 		//return nullptr;

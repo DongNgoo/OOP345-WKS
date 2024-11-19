@@ -69,7 +69,7 @@ namespace seneca {
             unsigned short season = seasonStr.empty() ? 1 : std::stoi(seasonStr);
             unsigned short numberInSeason = std::stoi(numberInSeasonStr);
 
-            unsigned int length = std::stoi(lengthStr);
+            unsigned int length = std::stoi(lengthStr.substr(0, 2)) * 3600 + std::stoi(lengthStr.substr(3, 2)) * 60 + std::stoi(lengthStr.substr(6));
 
             TvEpisode episode{ nullptr, numberOverall, season, numberInSeason, airDate, length, title, summary };
 

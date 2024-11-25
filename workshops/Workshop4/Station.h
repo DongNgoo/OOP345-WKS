@@ -6,11 +6,11 @@
 namespace seneca {
 
 	class Station {
-		int m_id;
+		int m_id = 0;
 		std::string m_itemName;
 		std::string m_description;
-		size_t m_serialNumber;
-		size_t m_quantity;
+		size_t m_serialNumber = 0;
+		size_t m_quantity = 0;
 
 		static size_t m_widthField;
 		static int id_generator;

@@ -6,6 +6,7 @@ namespace seneca {
 
 	//initialize static member
 	char Utilities::m_delimiter = ',';
+	
 
 	//set the current object = newWidth
 	void Utilities::setFieldWidth(size_t newWidth) {
@@ -19,32 +20,36 @@ namespace seneca {
 
 	std::string Utilities::extractToken(const std::string& str, size_t& next_pos, bool& more) {
 
-		if (next_pos >= str.length()) {
-			more = false;
-			return {};
-		}
+        if (next_pos >= str.length()) {
+            more = false;
+            throw "   ERROR: No token.";
+        }
 
-		size_t delimter_pos = str.find(m_delimiter, next_pos);
+        size_t end_pos = str.find(m_delimiter, next_pos);
+        std::string token;
 
-		//throw exception
-		if (delimter_pos == next_pos) {
-			throw std::runtime_error("Delimiter found at the starting position.");
-		}
+        if (end_pos == std::string::npos) {
+            token = str.substr(next_pos);
+            next_pos = str.length();
+        }
+        else {
+            token = str.substr(next_pos, end_pos - next_pos);
+            next_pos = end_pos + 1;
+        }
 
-		//extract token
-		std::string token = (delimter_pos == std::string::npos) 
-			? str.substr(next_pos) 
-			: str.substr(next_pos, delimter_pos - next_pos);
+        if (token.empty()) {
+            more = false;
+            throw "   ERROR: No token.";
+        }
 
-		//trim 
-		token.erase(0, token.find_first_not_of(' '));
-		token.erase(token.find_last_not_of(' ') + 1);
-		
-		//update field width
-		if (token.length() > m_widthField) {
-			m_widthField = token.length();
-		}
-		return token;
+        more = (next_pos < str.length());
+
+        if (token.length() > m_widthField) {
+            m_widthField = token.length();
+        }
+
+        return token;
+    
 	}
 
 	void Utilities::setDelimiter(char newDelimiter) {

@@ -25,7 +25,7 @@ namespace seneca{
 			
 			//Extract description
 			m_description = util.extractToken(record, next_pos, more);
-
+		    m_description.erase(0, m_description.find_first_not_of(' '));
 			//update m_widthField
 			
 			m_widthField = std::max(m_widthField, m_itemName.length());
@@ -61,18 +61,25 @@ namespace seneca{
 
 	//insert info about the current object into stream os
 	void Station::display(std::ostream& os, bool full) const {
+	
+			
+		os << std::setw(3) << std::setfill('0') << m_id << " | ";
 
-		os << std::setw(3) << std::setfill('0') << m_id << " | "  
-			<< std::left << std::setw(m_widthField) << std::setfill(' ') << m_itemName << " | " 
-			<< std::right << std::setw(6) << std::setfill('0') << m_serialNumber << " |"; 
+		
+		os << std::left << std::setw(m_widthField) << std::setfill(' ') << m_itemName << "|";
 
+		
+		os << " " << std::right << std::setw(6) << std::setfill('0') << m_serialNumber << " | ";
+
+	
 		if (full) {
-			os << " " << std::setw(4) << std::setfill(' ') << m_quantity << " | " 
-				<< m_description; 
+			os << std::setw(4) << std::setfill(' ') << m_quantity << " | "  
+				<< m_description;
 		}
-		os << std::endl;
 
+		os << std::endl;
 	}
+
 
 
 

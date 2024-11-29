@@ -3,6 +3,8 @@
 
 #include <string>
 #include <iostream>
+#include <iomanip>
+#include <stdexcept>
 #include "Station.h"
 #include "Utilities.h"
 
@@ -19,21 +21,39 @@ namespace seneca {
 
 		std::string m_name;
 		std::string m_product;
-		size_t m_cntItem;
-		Item** m_lstItem;
-
+		size_t m_cntItem{ 0 };
+		Item** m_lstItem{ nullptr };
 		static size_t m_widthField;
 
 	public:
+		//Default Customer
 		CustomerOrder();
 
+		//Customer coddnstructor
 		CustomerOrder(const std::string& record);
-		CustomerOrder(const CustomerOrder& other) = delete;
-		CustomerOrder& operator=(const CustomerOrder& other) = delete; 
-		CustomerOrder(CustomerOrder&& other) noexcept;       
-		CustomerOrder& operator=(CustomerOrder&& other) noexcept; 
+
+
+		//No copy constructor
+		CustomerOrder(const CustomerOrder&) {
+			throw std::runtime_error("Copy constructor is not allowed.");
+		}
+		//Move construstor
+		CustomerOrder(CustomerOrder&& other) noexcept;
+		
+		//Move Assignment Operator
+		CustomerOrder& operator=(CustomerOrder&& other) noexcept;
+
+		//Destructor
 		~CustomerOrder();
 
+
+		/*CustomerOrder(const CustomerOrder& other) = delete;
+		CustomerOrder& operator=(const CustomerOrder& other) = delete; */
+		 
+		
+		
+		//copy constructor
+		/*CustomerOrder(const CustomerOrder& other);*/
 		bool isOrderFilled() const;
 		bool isItemFilled(const std::string& itemName) const;
 		void fillItem(Station& station, std::ostream& os);

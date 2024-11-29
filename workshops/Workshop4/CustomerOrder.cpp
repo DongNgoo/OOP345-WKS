@@ -6,7 +6,7 @@ namespace seneca{
 	
 	size_t CustomerOrder::m_widthField = 0;
 	
-	//Default construster
+	//Default construsterS
 	CustomerOrder::CustomerOrder() {}
 
 	//Customer constructor
@@ -33,8 +33,9 @@ namespace seneca{
 			m_lstItem[i] = new Item(items[i]);
 		}
 
-		//Update m_widthField
-		m_widthField = std::max(m_widthField, util.getFieldWidth());
+		if (m_widthField < util.getFieldWidth()) {
+			m_widthField = util.getFieldWidth();
+		}
 	}
 		//Move constructor
 		CustomerOrder::CustomerOrder(CustomerOrder && other) noexcept {
@@ -55,6 +56,8 @@ namespace seneca{
 				m_name = std::move(other.m_name);
 				m_product = std::move(other.m_product);
 				m_cntItem = other.m_cntItem;
+				m_lstItem = other.m_lstItem;
+
 				other.m_lstItem = nullptr;
 				other.m_cntItem = 0;
 
@@ -72,6 +75,7 @@ namespace seneca{
 			delete[] m_lstItem;
 		}
 
+		//Check if order is filled
 		bool CustomerOrder::isOrderFilled() const {
 			for (size_t i = 0; i < m_cntItem; ++i) {
 				if (!m_lstItem[i]->m_isFilled) return false;

@@ -131,7 +131,7 @@ int main(int argc, char** argv)
 
 		try
 		{
-			// copy constructor
+			// copy constructorS
 			std::cout << "CustomerOrders::CustomerOrders(&): "; // Test #2
 			seneca::CustomerOrder anOrder(theOrders[0]);
 		}

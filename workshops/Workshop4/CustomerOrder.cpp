@@ -1,6 +1,7 @@
 #include "CustomerOrder.h"
 #include <iomanip>
 #include <algorithm>
+#include <cctype>
 #include <vector>
 namespace seneca{
 	
@@ -33,7 +34,7 @@ namespace seneca{
 			m_lstItem[i] = new Item(items[i]);
 		}
 
-		if (m_widthField < util.getFieldWidth()) {
+	     if (m_widthField < util.getFieldWidth()) {
 			m_widthField = util.getFieldWidth();
 		}
 	}
@@ -115,14 +116,39 @@ namespace seneca{
 				}
 			}
 		}
-	
+
+		std::string trim(const std::string& str) {
+			size_t start = str.find_first_not_of(" \t\r\n"); // Find first non-whitespace character
+			size_t end = str.find_last_not_of(" \t\r\n"); // Find last non-whitespace character
+
+			if (start == std::string::npos || end == std::string::npos) {
+				return ""; // Return empty string if no non-whitespace character found
+			}
+
+			return str.substr(start, end - start + 1); // Extract and return trimmed string
+		}
 		//Display the order
-	   void CustomerOrder::display(std::ostream& os) const {
-		  os << m_name << " - " << m_product << '\n';
-		 for (size_t i = 0; i < m_cntItem; ++i) {
-	  		os << "[" << std::setw(6) << std::setfill('0') << m_lstItem[i]->m_serialNumber << "] "
-					<< std::left << std::setw(m_widthField) << std::setfill(' ') << m_lstItem[i]->m_itemName << " - "
-					<< (m_lstItem[i]->m_isFilled ? "FILLED" : "TO BE FILLED") << '\n';
+		void CustomerOrder::display(std::ostream& os) const {
+			
+			os << m_name << "- " << trim(m_product) << '\n'; 
+
+		
+			for (size_t i = 0; i < m_cntItem; ++i) {
+				m_widthField = std::max(m_widthField, m_lstItem[i]->m_itemName.length());
+			}
+			
+		
+			for (size_t i = 0; i < m_cntItem; ++i) {
+				std::string trimmedItemName = trim(m_lstItem[i]->m_itemName);
+
+				// Format the output as per the required specifications
+				os << "[" << std::setw(6) << std::setfill('0') << m_lstItem[i]->m_serialNumber << "] "
+					<< std::left << std::setw(m_widthField) << std::setfill(' ')
+					<< trim(trimmedItemName) << "- " 
+					<< (m_lstItem[i]->m_isFilled ? "FILLED" : "TO BE FILLED");
+
+				if (i < m_cntItem - 1)
+					os << '\n'; // Avoid trailing newline after the last item
 			}
 		}
 

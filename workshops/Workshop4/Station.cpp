@@ -14,21 +14,27 @@ namespace seneca{
 	    m_id = ++id_generator;
 			//Extract name of the item
 			m_itemName = util.extractToken(record, next_pos, more);
+		    Utilities::trim(m_itemName);
 
 			//Extract the starting serial number
 			std::string serial = util.extractToken(record, next_pos, more);
 			m_serialNumber = std::stoul(serial);
-
+			
 			//Extract the quanity in stock
 			std::string quantity = util.extractToken(record, next_pos, more);
 			m_quantity = std::stoul(quantity);
 			
+			//update m_widthField
+		    if (m_widthField < util.getFieldWidth()) {
+		    	m_widthField = util.getFieldWidth();
+			}
+			
 			//Extract description
 			m_description = util.extractToken(record, next_pos, more);
 		    m_description.erase(0, m_description.find_first_not_of(' '));
-			//update m_widthField
+			Utilities::trim(m_description);
 			
-			m_widthField = std::max(m_widthField, m_itemName.length());
+			
 			
 
 
@@ -38,6 +44,7 @@ namespace seneca{
 
 	//Return the item name 
 	const std::string& Station::getItemName() const {
+		
 		return m_itemName;
 	}
 

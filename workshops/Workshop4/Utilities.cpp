@@ -61,4 +61,16 @@ namespace seneca {
 	}
 
 
+	void Utilities::trim(std::string& str)
+	{
+		size_t i = 0u;
+		for (i = 0u; i < str.length() && str[i] == ' '; ++i);
+		str = str.substr(i);
+
+		for (i = str.length(); i > 0 && str[i - 1] == ' '; --i);
+		str = str.substr(0, i);
+
+
+	}
+
 }

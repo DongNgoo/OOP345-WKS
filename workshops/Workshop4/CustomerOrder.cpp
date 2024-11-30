@@ -1,4 +1,5 @@
 #include "CustomerOrder.h"
+#include "Utilities.h"
 #include <iomanip>
 #include <algorithm>
 #include <cctype>
@@ -19,13 +20,23 @@ namespace seneca{
 		//Extract Customer name
 
 		m_name = util.extractToken(record, next_pos, more);
+		Utilities::trim(m_name);
 		//Product name
 		m_product = util.extractToken(record, next_pos, more);
+		Utilities::trim(m_product);
 
 		//Extract item names and populate the array
 		std::vector<std::string> items;
 		while (more) {
-			items.push_back(util.extractToken(record, next_pos, more));
+			std::string token = util.extractToken(record, next_pos, more);
+			Utilities::trim(token);
+			if (!token.empty()) {
+				items.push_back(token);
+			}
+		}
+
+		if (items.empty()) {
+			throw "Invalid record: At least one item is required.";
 		}
 
 		m_cntItem = items.size();
@@ -37,6 +48,8 @@ namespace seneca{
 	     if (m_widthField < util.getFieldWidth()) {
 			m_widthField = util.getFieldWidth();
 		}
+		 
+
 	}
 		//Move constructor
 		CustomerOrder::CustomerOrder(CustomerOrder && other) noexcept {
@@ -55,7 +68,9 @@ namespace seneca{
 				}
 
 				m_name = std::move(other.m_name);
+			   Utilities::trim(m_name);
 				m_product = std::move(other.m_product);
+				Utilities::trim(m_product);
 				m_cntItem = other.m_cntItem;
 				m_lstItem = other.m_lstItem;
 
@@ -87,17 +102,31 @@ namespace seneca{
 
 		//Check if a specific item is filled
 
-		bool CustomerOrder::isItemFilled(const std::string& itemName) const {
+	/*	bool CustomerOrder::isItemFilled(const std::string& itemName) const {
+
 			for (size_t i = 0; i < m_cntItem; ++i) {
 				if (m_lstItem[i]->m_itemName == itemName && !m_lstItem[i]->m_isFilled) {
 					return false;
 				}
 			}
 			return true;
+		}*/
+
+		bool CustomerOrder::isItemFilled(const std::string& itemName) const {
+			bool itemExists = false;
+			for (size_t i = 0; i < m_cntItem; ++i) {
+				if (m_lstItem[i]->m_itemName == itemName) {
+					itemExists = true;
+					if (!m_lstItem[i]->m_isFilled) {
+						return false;
+					}
+				}
+			}
+			return itemExists ? true : true;
 		}
 
 		//Fill an item in the order
-		void CustomerOrder::fillItem(Station& station, std::ostream& os) {
+		/*void CustomerOrder::fillItem(Station& station, std::ostream& os) {
 
 			for (size_t i = 0; i < m_cntItem; ++i) {
 				if (m_lstItem[i]->m_itemName == station.getItemName()) {
@@ -107,7 +136,7 @@ namespace seneca{
 
 						m_lstItem[i]->m_isFilled = true;
 						station.updateQuantity();
-						os << "Filled " << m_name << ", " << m_product << " [" << m_lstItem[i]->m_itemName << "]\n";
+						os << "    Filled " << m_name << ", " << m_product << " [" << m_lstItem[i]->m_itemName << "]\n";
 					}
 					else {
 						os << "Unable to fill " << m_name << ", " << m_product << " [" << m_lstItem[i]->m_itemName << "]\n";
@@ -115,42 +144,57 @@ namespace seneca{
 					
 				}
 			}
-		}
+		}*/
 
-		std::string trim(const std::string& str) {
-			size_t start = str.find_first_not_of(" \t\r\n"); // Find first non-whitespace character
-			size_t end = str.find_last_not_of(" \t\r\n"); // Find last non-whitespace character
-
-			if (start == std::string::npos || end == std::string::npos) {
-				return ""; // Return empty string if no non-whitespace character found
+		void CustomerOrder::fillItem(Station& station, std::ostream& os) {
+			for (size_t i = 0; i < m_cntItem; ++i) {
+				// Check if the station handles this item and it's not already filled
+				if (m_lstItem[i]->m_itemName == station.getItemName() && !m_lstItem[i]->m_isFilled) {
+					if (station.getQuantity() > 0) {
+						m_lstItem[i]->m_serialNumber = station.getNextSerialNumber();
+						m_lstItem[i]->m_isFilled = true;
+						station.updateQuantity();
+						os << "    Filled " << m_name << ", " << m_product
+							<< " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
+					}
+					else {
+						os << "    Unable to fill " << m_name << ", " << m_product
+							<< " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
+					}
+					// Stop processing this item after it's handled
+					break;
+				}
 			}
-
-			return str.substr(start, end - start + 1); // Extract and return trimmed string
 		}
+
+
+
+
+	
 		//Display the order
 		void CustomerOrder::display(std::ostream& os) const {
-			
-			os << m_name << "- " << trim(m_product) << '\n'; 
 
-		
+
+			os << m_name << " - " << m_product << '\n';
 			for (size_t i = 0; i < m_cntItem; ++i) {
-				m_widthField = std::max(m_widthField, m_lstItem[i]->m_itemName.length());
+				Utilities::trim(m_lstItem[i]->m_itemName);
+
 			}
-			
-		
+
 			for (size_t i = 0; i < m_cntItem; ++i) {
-				std::string trimmedItemName = trim(m_lstItem[i]->m_itemName);
 
 				// Format the output as per the required specifications
-				os << "[" << std::setw(6) << std::setfill('0') << m_lstItem[i]->m_serialNumber << "] "
-					<< std::left << std::setw(m_widthField) << std::setfill(' ')
-					<< trim(trimmedItemName) << "- " 
-					<< (m_lstItem[i]->m_isFilled ? "FILLED" : "TO BE FILLED");
+				Utilities::trim(m_lstItem[i]->m_itemName);
 
-				if (i < m_cntItem - 1)
-					os << '\n'; // Avoid trailing newline after the last item
+
+				os << "[" << std::setw(6) << std::setfill('0') << m_lstItem[i]->m_serialNumber << "] "
+					<< std::left << std::setw(m_widthField - 1) << std::setfill(' ')
+					<< m_lstItem[i]->m_itemName
+					<< "- " << (m_lstItem[i]->m_isFilled ? "FILLED" : "TO BE FILLED") << "\n";
+
+
+
 			}
 		}
-
 
 }

@@ -22,6 +22,9 @@ namespace seneca{
 
 		//returns the delimeter for this class
 		static char getDelimiter();
+
+
+		static void trim(std::string& str);
 	};
 }
 #endif

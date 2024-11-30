@@ -11,13 +11,13 @@ namespace seneca {
 
 	class Workstation : public Station {
 		std::deque<CustomerOrder> m_orders;
-		Workstation* m_pNextStation = nullptr;
+		Workstation* m_pNextStation{ nullptr };
 
 	public:
 
 		//Customer construsctor
 
-		Workstation(const std::string& name);
+		explicit Workstation(const std::string& name);
 
 		// Deleted copy and move operations
 		Workstation(const Workstation&) = delete;

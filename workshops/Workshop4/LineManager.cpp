@@ -3,6 +3,8 @@
 #include "Utilities.h"
 #include <iomanip>
 #include <algorithm>
+#include <fstream>
+#include <sstream>
 #include <cctype>
 #include <vector>
 namespace seneca {
@@ -13,42 +15,51 @@ namespace seneca {
 		if (!inputFile) {
 			throw "Error: Unable to open file: " + file;
 		}
+		Utilities util;
+		std::string line;
 
-		//Parse file and set up workstation connection
-		std::string record;
-		while (std::getline(inputFile, record)) {
-			auto delimeter = record.find('|');
-			if (delimeter != std::string::npos) {
-				std::string currentStation = record.substr(0, delimeter);
-				std::string nextStation = record.substr(delimeter + 1);
+		while (std::getline(inputFile, line)) {
+			size_t next_pos = 0;
+			bool more = true;
 
-				//Find workstation by name
-				auto current = std::find_if(stations.begin(), stations.end(), [&](Workstation* ws) {
-					return ws->getItemName() == currentStation;
+			std::string currentStationName = util.extractToken(line, next_pos, more);
+			std::string nextStationName;
 
-					});
-				auto next = std::find_if(stations.begin(), stations.end(), [&](Workstation* ws) {
-					return ws->getItemName() == nextStation;
-					});
+			if (more) {
+				nextStationName = util.extractToken(line, next_pos, more);
+			}
+			auto currentStation = std::find_if(stations.begin(), stations.end(),
+				[&](Workstation* ws) { return ws->getItemName() == currentStationName; });
 
-				if (current != stations.end()) {
-					(*current)->setNextStation(next != stations.end() ? *next : nullptr);
+			auto nextStation = std::find_if(stations.begin(), stations.end(),
+				[&](Workstation* ws) { return ws->getItemName() == nextStationName; });
+
+			if (currentStation != stations.end()) {
+				m_activeLine.push_back(*currentStation);
+				if (nextStation != stations.end()) {
+					(*currentStation)->setNextStation(*nextStation);
 				}
 			}
 		}
-
-		//Set up m_activeLine and find first station
-		m_activeLine = stations;
-
-		m_firstStation = *std::find_if(stations.begin(), stations.end(), [&](Workstation* ws) {
-			return std::none_of(stations.begin(), stations.end(), [&](Workstation* other) {
-				return other->getNextStation() == ws;
-				});
+		auto firstStationIt = std::find_if(m_activeLine.begin(), m_activeLine.end(),
+			[&](Workstation* ws) {
+				return std::none_of(m_activeLine.begin(), m_activeLine.end(),
+				[&](Workstation* other) { return other->getNextStation() == ws; });
 			});
 
-		//Update the count of customer order
+		if (firstStationIt != m_activeLine.end()) {
+			m_firstStation = *firstStationIt;
+		}
+		else {
+			throw "Error: Unable to identify the first station.";
+		}
 
+		// Set total orders count
 		m_cntCustomerOrder = g_pending.size();
+
+		
+		
+		
 	}
 
 	// Reorder stations
@@ -66,33 +77,38 @@ namespace seneca {
 
 	//Run one iteration of the assambly line
 	bool LineManager::run(std::ostream & os) {
-		static size_t iteration = 0;
+		static size_t iterationCount = 0;
+		++iterationCount;
 
-		os << "Line Manager Iteration: " << ++iteration << std::endl;
+		os << "Line Manager Iteration: " << iterationCount << std::endl;
 
+		// Move one order from g_pending to the first station
 		if (!g_pending.empty()) {
 			*m_firstStation += std::move(g_pending.front());
 			g_pending.pop_front();
 		}
 
-		//Perfomr fill  operartion on each workstation
-		std::for_each(m_activeLine.begin(), m_activeLine.end(), [&](Workstation* ws) {
-			ws->fill(os);
-			});
+		// Fill and move orders for each station
+		for (auto& station : m_activeLine) {
+			station->fill(os);
+		}
 
-		// Attempt to move orders down the line
-		std::for_each(m_activeLine.begin(), m_activeLine.end(), [&](Workstation* ws) {
-			ws->attemptToMoveOrder();
-			});
+		for (auto& station : m_activeLine) {
+			station->attemptToMoveOrder();
+		}
+		// Check if all orders are processed (completed or incomplete)
+	    size_t totalOrdersProcessed = g_completed.size() + g_incomplete.size();
+		if (totalOrdersProcessed == m_cntCustomerOrder) {
+			return true; // All orders are either completed or cannot be filled
+		}
 
-		// Check if all orders are processed
-		return g_completed.size() + g_incomplete.size() == m_cntCustomerOrder;
+		return false; // Continue processing
 	}
 
 	// Display all active stations in the current order
 	void LineManager::display(std::ostream& os) const {
-		std::for_each(m_activeLine.begin(), m_activeLine.end(), [&](const Workstation* ws) {
-			ws->display(os);
-			});
+		for (const auto& station : m_activeLine) {
+			station->display(os);
+		}
 	}
 }

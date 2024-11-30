@@ -102,7 +102,7 @@ namespace seneca{
 
 		//Check if a specific item is filled
 
-	/*	bool CustomerOrder::isItemFilled(const std::string& itemName) const {
+		/*bool CustomerOrder::isItemFilled(const std::string& itemName) const {
 
 			for (size_t i = 0; i < m_cntItem; ++i) {
 				if (m_lstItem[i]->m_itemName == itemName && !m_lstItem[i]->m_isFilled) {
@@ -113,43 +113,42 @@ namespace seneca{
 		}*/
 
 		bool CustomerOrder::isItemFilled(const std::string& itemName) const {
-			bool itemExists = false;
+			
 			for (size_t i = 0; i < m_cntItem; ++i) {
-				if (m_lstItem[i]->m_itemName == itemName) {
-					itemExists = true;
-					if (!m_lstItem[i]->m_isFilled) {
-						return false;
-					}
+				if (m_lstItem[i]->m_itemName == itemName && !m_lstItem[i]->m_isFilled) {
+					return false;
 				}
 			}
-			return itemExists ? true : true;
+			return true;
 		}
 
 		//Fill an item in the order
 		/*void CustomerOrder::fillItem(Station& station, std::ostream& os) {
-
 			for (size_t i = 0; i < m_cntItem; ++i) {
 				if (m_lstItem[i]->m_itemName == station.getItemName()) {
-
 					if (station.getQuantity() > 0) {
-						m_lstItem[i]->m_serialNumber = station.getNextSerialNumber();
-
-						m_lstItem[i]->m_isFilled = true;
 						station.updateQuantity();
-						os << "    Filled " << m_name << ", " << m_product << " [" << m_lstItem[i]->m_itemName << "]\n";
+						m_lstItem[i]->m_serialNumber = station.getNextSerialNumber();
+						m_lstItem[i]->m_isFilled = true;
+						os << "Filled " << m_name << ", " << m_product << " ["
+							<< m_lstItem[i]->m_itemName << "]\n";
 					}
 					else {
-						os << "Unable to fill " << m_name << ", " << m_product << " [" << m_lstItem[i]->m_itemName << "]\n";
+						os << "Unable to fill " << m_name << ", " << m_product << " ["
+							<< m_lstItem[i]->m_itemName << "]\n";
 					}
-					
+					return;
 				}
 			}
 		}*/
 
+
 		void CustomerOrder::fillItem(Station& station, std::ostream& os) {
 			for (size_t i = 0; i < m_cntItem; ++i) {
-				// Check if the station handles this item and it's not already filled
+				os << "Checking item: " << m_lstItem[i]->m_itemName << std::endl;
+				os << "station get name: " << station.getItemName() << std::endl;
 				if (m_lstItem[i]->m_itemName == station.getItemName() && !m_lstItem[i]->m_isFilled) {
+					os << "Item matches and is not filled. Proceeding." << std::endl;
 					if (station.getQuantity() > 0) {
 						m_lstItem[i]->m_serialNumber = station.getNextSerialNumber();
 						m_lstItem[i]->m_isFilled = true;
@@ -161,8 +160,7 @@ namespace seneca{
 						os << "    Unable to fill " << m_name << ", " << m_product
 							<< " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
 					}
-					// Stop processing this item after it's handled
-					break;
+					break;  // Stop processing after handling one item
 				}
 			}
 		}

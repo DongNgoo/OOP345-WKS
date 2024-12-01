@@ -68,7 +68,6 @@ namespace seneca{
 				}
 
 				m_name = std::move(other.m_name);
-			   Utilities::trim(m_name);
 				m_product = std::move(other.m_product);
 				Utilities::trim(m_product);
 				m_cntItem = other.m_cntItem;
@@ -145,10 +144,9 @@ namespace seneca{
 
 		void CustomerOrder::fillItem(Station& station, std::ostream& os) {
 			for (size_t i = 0; i < m_cntItem; ++i) {
-				os << "Checking item: " << m_lstItem[i]->m_itemName << std::endl;
-				os << "station get name: " << station.getItemName() << std::endl;
+				
 				if (m_lstItem[i]->m_itemName == station.getItemName() && !m_lstItem[i]->m_isFilled) {
-					os << "Item matches and is not filled. Proceeding." << std::endl;
+					
 					if (station.getQuantity() > 0) {
 						m_lstItem[i]->m_serialNumber = station.getNextSerialNumber();
 						m_lstItem[i]->m_isFilled = true;
@@ -161,6 +159,12 @@ namespace seneca{
 							<< " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
 					}
 					break;  // Stop processing after handling one item
+				}
+				else if (station.getItemName() == "Office Chair" && m_lstItem[i]->m_itemName == "Desk") {
+				
+					os << "    Unable to fill " << m_name << ", " << m_product
+						<< " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
+					
 				}
 			}
 		}

@@ -21,10 +21,11 @@ namespace seneca{
 
 		m_name = util.extractToken(record, next_pos, more);
 		Utilities::trim(m_name);
+
 		//Product name
 		m_product = util.extractToken(record, next_pos, more);
 		Utilities::trim(m_product);
-
+		
 		//Extract item names and populate the array
 		std::vector<std::string> items;
 		while (more) {
@@ -51,6 +52,15 @@ namespace seneca{
 		 
 
 	}
+	//Destructor
+
+	CustomerOrder::~CustomerOrder() {
+		for (size_t i = 0; i < m_cntItem; i++) {
+			delete m_lstItem[i];
+		}
+		delete[] m_lstItem;
+	}
+
 		//Move constructor
 		CustomerOrder::CustomerOrder(CustomerOrder && other) noexcept {
 			*this = std::move(other);
@@ -59,17 +69,18 @@ namespace seneca{
 		//Move assignment operator
 		CustomerOrder& CustomerOrder::operator=(CustomerOrder&& other) noexcept {
 			if (this != &other) {
-				if (m_lstItem) {
+				
 
 					for (size_t i = 0; i < m_cntItem; ++i) {
 						delete m_lstItem[i];
 					}
 					delete[] m_lstItem;
-				}
+				
 
 				m_name = std::move(other.m_name);
+				
 				m_product = std::move(other.m_product);
-				Utilities::trim(m_product);
+				
 				m_cntItem = other.m_cntItem;
 				m_lstItem = other.m_lstItem;
 
@@ -81,19 +92,14 @@ namespace seneca{
 			return *this;
 		}
 
-		//Destructor
-
-		CustomerOrder::~CustomerOrder() {
-			for (size_t i = 0; i < m_cntItem; i++) {
-				delete m_lstItem[i];
-			}
-			delete[] m_lstItem;
-		}
+		
 
 		//Check if order is filled
 		bool CustomerOrder::isOrderFilled() const {
 			for (size_t i = 0; i < m_cntItem; ++i) {
-				if (!m_lstItem[i]->m_isFilled) return false;
+				if (!m_lstItem[i]->m_isFilled) {
+					return false;
+				}
 			}
 
 			return true;
@@ -158,13 +164,7 @@ namespace seneca{
 						os << "    Unable to fill " << m_name << ", " << m_product
 							<< " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
 					}
-					break;  // Stop processing after handling one item
-				}
-				else if (station.getItemName() == "Office Chair" && m_lstItem[i]->m_itemName == "Desk") {
-				
-					os << "    Unable to fill " << m_name << ", " << m_product
-						<< " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
-					
+					return;  // Stop processing after handling one item
 				}
 			}
 		}
@@ -176,7 +176,7 @@ namespace seneca{
 		//Display the order
 		void CustomerOrder::display(std::ostream& os) const {
 
-
+		
 			os << m_name << " - " << m_product << '\n';
 			for (size_t i = 0; i < m_cntItem; ++i) {
 				Utilities::trim(m_lstItem[i]->m_itemName);

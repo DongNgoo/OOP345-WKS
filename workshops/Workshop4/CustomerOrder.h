@@ -20,8 +20,8 @@ namespace seneca {
 
 			Item(const std::string& src) : m_itemName(src) {};
 		};
-		std::string m_name;
-		std::string m_product;
+		std::string m_name{};
+		std::string m_product{};
 		size_t m_cntItem{ 0 };
 		Item** m_lstItem{ nullptr };
 		static size_t m_widthField;
@@ -33,19 +33,21 @@ namespace seneca {
 		//Customer coddnstructor
 		CustomerOrder(const std::string& record);
 
+		//Destructor
+	    ~CustomerOrder();
 
-		//No copy constructor
-		CustomerOrder(const CustomerOrder&) {
-			throw std::runtime_error("Copy constructor is not allowed.");
-		}
+		//copy constructor
+		CustomerOrder(const CustomerOrder&) = delete;
+		//Copy assignment constructor
+		CustomerOrder& operator=(const CustomerOrder&) = delete;
+	
 		//Move construstor
 		CustomerOrder(CustomerOrder&& other) noexcept;
 		
 		//Move Assignment Operator
 		CustomerOrder& operator=(CustomerOrder&& other) noexcept;
 
-		//Destructor
-		~CustomerOrder();
+	
 
 
 		/*CustomerOrder(const CustomerOrder& other) = delete;

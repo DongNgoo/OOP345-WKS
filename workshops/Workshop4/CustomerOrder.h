@@ -27,17 +27,21 @@ namespace seneca {
 		static size_t m_widthField;
 
 	public:
-		//Default Customer
+		//Default Constructor
 		CustomerOrder();
 
-		//Customer coddnstructor
+		//Customer Constructor - 1 argument
 		CustomerOrder(const std::string& record);
 
 		//Destructor
 	    ~CustomerOrder();
 
+		/**********PROF****************/
 		//copy constructor
-		CustomerOrder(const CustomerOrder&) = delete;
+		// CustomerOrder(const CustomerOrder&) = delete;
+		// Should be....
+		CustomerOrder(const CustomerOrder&);
+		
 		//Copy assignment constructor
 		CustomerOrder& operator=(const CustomerOrder&) = delete;
 	

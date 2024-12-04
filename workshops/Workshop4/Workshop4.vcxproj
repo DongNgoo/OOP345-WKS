@@ -132,6 +132,7 @@
   <ItemGroup>
     <Text Include="AssemblyLine.txt" />
     <Text Include="CustomerOrders.txt" />
+    <Text Include="reflect.txt" />
     <Text Include="Stations1.txt" />
     <Text Include="Stations2.txt" />
     <Text Include="tester_1_sample_output.txt" />
@@ -142,13 +143,21 @@
     <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CustomerOrder.cpp" />
+    <ClCompile Include="LineManager.cpp" />
+    <ClCompile Include="Station.cpp" />
     <ClCompile Include="tester_1.cpp" />
     <ClCompile Include="tester_2.cpp" />
     <ClCompile Include="tester_3.cpp" />
+    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="WorkStation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CustomerOrder.h" />
+    <ClInclude Include="LineManager.h" />
     <ClInclude Include="Station.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="WorkStation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

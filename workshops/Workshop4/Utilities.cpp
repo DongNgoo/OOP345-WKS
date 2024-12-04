@@ -47,7 +47,7 @@ namespace seneca {
         if (token.length() > m_widthField) {
             m_widthField = token.length();
         }
-
+		Utilities::trim(token);
         return token;
     
 	}
